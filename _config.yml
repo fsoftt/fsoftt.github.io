@@ -1,0 +1,8 @@
+title: fsoftt.github.io
+email: fsilva@duck.com
+description: "Personal portfolio"
+baseurl: ""
+url: "https://fsoftt.github.io"
+theme: minima
+plugins:
+  - jekyll-feed

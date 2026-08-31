@@ -1,0 +1,4 @@
+body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial; max-width: 42rem; margin: 2rem auto; padding: 0 1rem; color: #222; }
+header h1 { margin: 0 0 1rem 0; font-size: 1.5rem; }
+main { line-height: 1.6; }
+footer { margin-top: 2rem; color: #666; font-size: 0.9rem; }
