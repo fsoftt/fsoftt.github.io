@@ -4,6 +4,8 @@ title: "How the .NET Garbage Collector Works"
 date: 2026-08-31 09:00:00 +0000
 ---
 
+# How the .NET Garbage Collector Works
+
 When we talk about memory management in .NET, most developers think about the garbage collector as a background cleanup mechanism. That is true, but it is also incomplete.
 
 From an architect’s perspective, the GC is one of the most important parts of the runtime because it shapes application latency, throughput, memory usage, and even how we design software. From a developer’s perspective, it is the system that decides whether an object is alive or dead, and it does so in a way that is fast, predictable, and surprisingly efficient most of the time.
