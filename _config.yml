@@ -3,6 +3,6 @@ email: fsilva@duck.com
 description: "Personal portfolio"
 baseurl: ""
 url: "https://fsoftt.github.io"
-theme: minima
+theme: jekyll-theme-cayman
 plugins:
   - jekyll-feed

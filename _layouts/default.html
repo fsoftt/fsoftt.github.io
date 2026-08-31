@@ -3,18 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}" />
     <title>{{ page.title | default: site.title }}</title>
     <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}" />
+    {% if site.theme %}
+      <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css" />
+    {% endif %}
   </head>
   <body>
-    <header>
-      <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+    <header class="page-header">
+      <h1 class="project-name"><a href="{{ '/' | relative_url }}" style="color: inherit; text-decoration: none;">{{ site.title }}</a></h1>
+      <h2 class="project-tagline">{{ site.description }}</h2>
     </header>
-    <main>
+
+    <main class="main-content">
       {{ content }}
     </main>
-    <footer>
-      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
+
+    <footer class="site-footer">
+      <span class="site-footer-owner">© {{ site.time | date: '%Y' }} {{ site.title }}</span>
     </footer>
   </body>
 </html>
