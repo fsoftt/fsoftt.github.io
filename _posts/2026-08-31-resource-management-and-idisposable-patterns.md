@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Resource Management and IDisposable: Ownership, Finalizers, and Safe Cleanup in .NET"
+title: "Resource Ownership in .NET: IDisposable, Finalizers, and Safe Cleanup"
 date: 2026-08-31 10:00:00 +0000
 ---
 
-# Resource Management and IDisposable: Ownership, Finalizers, and Safe Cleanup in .NET
+# Resource Ownership in .NET: IDisposable, Finalizers, and Safe Cleanup
 
 One of the most important responsibilities in software design is resource management. Not every object is a purely in-memory value. Some types own files, sockets, database connections, locks, network streams, unmanaged handles, or expensive native resources. When that happens, correctness is not just a matter of writing clean code. It is a matter of making sure the resource is released predictably, even in the presence of exceptions, cancellation, and asynchronous flows.
 
