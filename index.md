@@ -8,10 +8,10 @@ title: Home
 
   {% for post in site.posts %}
     <article>
-      <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-      <p><small>{{ post.date | date: "%B %-d, %Y" }}</small></p>
+      <h3 class="mb-0 pb-0"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+      <p class="mt-0"><small>{{ post.date | date: "%B %-d, %Y" }}</small></p>
       {% if post.excerpt != empty %}
-        <p>{{ post.excerpt | strip_html | truncatewords: 40 }}</p>
+        <p>{{ post.excerpt | strip_html | truncatewords: 200 }}</p>
       {% endif %}
     </article>
   {% endfor %}
