@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "How the .NET Garbage Collector Works"
+title: "How the .NET Garbage Collector Really Works"
 date: 2026-08-31 09:00:00 +0000
 ---
 
-# How the .NET Garbage Collector Works
+# How the .NET Garbage Collector Really Works
 
 When we talk about memory management in .NET, most developers think about the garbage collector as a background cleanup mechanism. That is true, but it is also incomplete.
 
