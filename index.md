@@ -11,5 +11,6 @@ title: Home
       <h3 class="mb-0 pb-0"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
       <p class="mt-0"><small>{{ post.date | date: "%B %-d, %Y" }}</small></p>
     </article>
+    <br>
   {% endfor %}
 </section>
