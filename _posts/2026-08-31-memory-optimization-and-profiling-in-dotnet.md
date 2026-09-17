@@ -42,7 +42,30 @@ Profiling helps answer questions such as:
 - where does latency accumulate under load?
 - which regions of the application cause the most GC pressure?
 
-This is where tools like dotTrace become extremely valuable.
+### Sampling vs. instrumentation profiling
+
+There are two main approaches to profiling:
+
+**Sampling profilers** periodically pause the application and inspect the call stack. They capture where time is being spent without modifying the code. Sampling is lightweight and has low overhead, but can miss short-lived methods if the sample rate is too low.
+
+**Instrumentation profilers** inject code into methods to track entry/exit and measure time precisely. They can also track object allocations. Instrumentation is more accurate, but has higher overhead and can distort timing in heavily-called code.
+
+For analyzing allocation patterns, instrumentation profilers (which track every allocation) are more precise. For understanding overall CPU hotspots, sampling profilers are often sufficient.
+
+### Allocation profiling and hotspot analysis
+
+Allocation profiling specifically tracks which code paths create objects and how many bytes are allocated. This is distinct from understanding which code runs slow (CPU profiling).
+
+A hotspot is a code region that dominates a particular resource metric (CPU, memory, I/O). Allocation hotspots often reveal patterns like:
+
+- LINQ chains that materialize large intermediate collections
+- repeated string concatenation in loops
+- exception creation and throwing in error paths
+- repeated serialization work in request handlers
+- unnecessary object copying in data processing pipelines
+- large DTOs created per request even when only a few fields are used
+
+The key insight from allocation hotspot analysis is that memory churn is often correlated with CPU cost and GC pressure. A code path that allocates heavily is usually also doing a lot of work.
 
 ## dotTrace and CPU hotspot analysis
 
@@ -73,16 +96,46 @@ Memory analysis is the process of understanding what is present in the managed h
 
 This is critical because many performance issues are not obvious from the code alone. An application may look simple, but under production-like traffic it might hold onto large object graphs due to caching, asynchronous callbacks, or long-lived service state.
 
-Memory analysis often focuses on:
+### Heap snapshots and object retention
 
-- large retained objects
-- object graph roots
-- long-lived cache growth
-- repetitive allocations in loops
-- large arrays or strings retained in memory
-- unexpected object churn that forces more frequent GC collections
+A heap snapshot captures the state of the managed heap at a point in time. It lists all objects, their types, sizes, and the references between them. This forms an object graph.
 
-The main symptom of a memory problem is usually not a crash. It is gradual growth, rising GC pressure, or poor latency caused by frequent collections.
+A retention analysis examines this graph to answer: "what is keeping this large object alive?"
+
+The analysis typically traces backward from a large object or a collection of objects:
+- which root references start the chain?
+- which intermediate objects connect the root to the large object?
+- where in the application code is that retention happening?
+
+This is more powerful than simply knowing an object exists. It reveals the *path* from a root to the data, which often points to a specific architectural issue.
+
+For example, a large cache object might be retained by a static field in a service class. A snapshot analysis would show: `Root > ServiceClass.Instance > CacheField > LargeCollection > items`. This trace immediately identifies where to look for the bug.
+
+### Heap survivors and generational analysis
+
+Advanced memory analysis tools can compare heap snapshots over time or over multiple generations. This reveals:
+
+- which objects are surviving longer than expected
+- which objects are moving from Gen 0 to Gen 1 or Gen 2
+- whether object lifetimes match the intended architecture
+
+
+If an object that should be request-scoped survives beyond its request, it will show up as an unexpected survivor. This pattern often indicates:
+- an event handler was never unsubscribed
+- a cache reference was not released
+- asynchronous work captured a long-lived closure
+- an output buffer or accumulated result collection was not cleared
+
+### Histogram and memory pressure analysis
+
+A memory histogram groups objects by type and shows:
+- total count of each type
+- total bytes consumed by each type
+- percentage of heap used by each type
+
+Large histograms quickly reveal which types are consuming the most memory. If a single type (e.g., `String`, `byte[]`, or a custom collection) consumes 40% of the heap, that is a signal to investigate why.
+
+Memory pressure analysis combines histograms with allocation rates: if a type is both common in the histogram and being allocated frequently, the application may be thrashing that type (allocating and discarding it repeatedly). This signals an opportunity for pooling or reuse.
 
 ## Memory dumps and leak diagnosis
 
