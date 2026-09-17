@@ -28,9 +28,9 @@ Each provider has a different SQL dialect, execution engine, optimizer, and feat
 
 That matters because performance issues are often not caused by EF itself. They are caused by the SQL that EF generates for a particular provider or by the way the provider behaves under load.
 
-## Different providers, different SQL
+## Producer-specific SQL generation and optimization
 
-A simple query like filtering and ordering by a column can generate very different SQL depending on the database backend. Some providers support certain expressions better than others. Some providers optimize some patterns more effectively. Others may require different index strategies or query shapes to perform well.
+The same LINQ query can generate very different SQL depending on the database backend. Some providers support certain expressions better than others. Some providers optimize some patterns more effectively. Others may require different index strategies or query shapes to perform well.
 
 Examples of provider-specific differences include:
 
@@ -41,30 +41,101 @@ Examples of provider-specific differences include:
 - generated identifiers and sequences
 - stored procedure and function support
 - transaction isolation defaults
+- bulk operation support (`MERGE`, `INSERT...SELECT`)
 
-This means a single codebase can behave differently across environments if the provider or database engine changes. That is why a good architecture does not assume the database is interchangeable just because EF hides the details.
+This means a single codebase can behave differently across environments if the provider or database engine changes.
 
-## Query translation and execution plans
+### Lazy loading and implicit queries
 
-EF Core is excellent at abstracting data access, but it is not a query optimizer. It translates LINQ to SQL, and then the database engine optimizes the query.
+Lazy loading is a feature where related data is loaded on-demand when a navigation property is accessed. For example:
 
-That creates an important boundary:
+```csharp
+var order = context.Orders.FirstOrDefault(o => o.Id == 1);
+var customerName = order.Customer.Name;  // Triggers a query
+```
 
-- EF decides what query to send
-- the database decides how to execute it
+Accessing `order.Customer` triggers a query to load the Customer. This is convenient in application code, but it can hide expensive database access:
 
-If the LINQ query is structurally inefficient, the database optimizer may still produce a poor execution plan. Conversely, if the provider translates a query in a way that is not optimal for the target database, the performance issue will appear even though the C# code looks clean.
+- Each lazy load is a network round trip.
+- In a loop, a single query can trigger N additional queries (the N+1 problem).
+- Lazy loading can cause unexpected database access in UI binding or serialization.
 
-This is why the developer must pay attention to:
+For performance-sensitive code, explicit loading (`.Include()` or `.Select()`) is better because it makes the query shape visible and can be optimized together.
 
-- the shape of the LINQ query
-- the size of the result set
-- whether the query causes multiple round trips
-- whether projections are used correctly
-- whether `Include()` is creating expensive joins or duplicate data
-- whether tracking is enabled when it is not required
+### Bulk operations and batch efficiency
 
-A database provider difference is often visible in the query plan rather than in the C# code itself.
+EF Core supports SaveChanges() which batches updates, inserts, and deletes. However, individual SaveChanges() calls generate separate SQL commands. For large-scale data operations (bulk insert, bulk update), this can be very slow.
+
+Some providers (SQL Server, PostgreSQL) support bulk operation syntax, but EF often doesn't use it directly. Instead, teams use:
+
+- `ExecuteUpdate()` and `ExecuteDelete()` for bulk operations
+- third-party libraries like EF Core Plus for bulk operations
+- raw SQL and procedures for the highest performance
+
+A query that inserts 100,000 rows using a loop of individual SaveChanges() calls will issue 100,000 INSERT statements. The same operation using a bulk insert library might issue a single statement that completes in seconds.
+
+## LINQ translation and compilation
+
+Entity Framework Core translates LINQ queries into SQL. This translation process is critical to understanding performance.
+
+### Query compilation stages
+
+When a LINQ query is executed, it goes through several stages:
+
+1. **LINQ expression tree building**: The C# compiler transforms the query syntax into an expression tree.
+2. **EF query translation**: EF's query provider translates the expression tree into an intermediate representation.
+3. **Provider-specific SQL generation**: The database provider converts to provider-specific SQL.
+4. **Database execution**: The database engine parses, optimizes, and executes the SQL.
+5. **Result mapping**: EF materializes the query results back into CLR objects with change tracking.
+
+Each stage can introduce inefficiencies. The most common issues are:
+
+- **Untranslatable LINQ**: Some LINQ operations (e.g., calling custom C# methods) cannot be translated to SQL. EF falls back to client-side evaluation, which can fetch the entire table and filter in-memory.
+- **Inefficient SQL generation**: The provider might generate suboptimal SQL for a valid LINQ expression.
+- **Cartesian explosion**: Joins without proper filtering can multiply row counts unexpectedly.
+- **N+1 queries**: Multiple queries are generated instead of a single optimized query.
+
+Understanding where the bottleneck is requires inspecting the generated SQL, which is why `LoggerFactory` and `.EnableSensitiveDataLogging()` are so valuable for debugging.
+
+### Expression tree analysis
+
+The LINQ expression tree is the intermediate representation between user code and SQL. Complex queries build deeply-nested expression trees.
+
+For example:
+
+```csharp
+context.Orders
+    .Where(o => o.Customer.Country == "Spain")
+    .Select(o => new { o.Id, o.Amount, Name = o.Customer.Name })
+    .OrderBy(x => x.Amount)
+    .Take(10)
+```
+
+This builds an expression tree with five nested operations. EF must understand each operation, understand how they interact, and translate the entire composition into a single efficient SQL query.
+
+If EF cannot translate a part of the expression (e.g., a custom method call), it stops SQL translation and brings the remaining operation to the client. This results in fetching potentially large result sets into memory and filtering there.
+
+### Change tracking overhead
+
+EF's change tracking is a powerful feature that enables efficient updates, but it has a cost.
+
+When an entity is materialized from a query with tracking enabled (the default), EF:
+- Stores a copy of the original property values.
+- Stores the entity in its identity map.
+- Creates a state entry to track changes.
+
+For each entity, this requires additional memory and comparisons. If a query materializes 10,000 entities with tracking enabled, EF allocates tracking state for all 10,000, which increases memory consumption and slows materialization.
+
+For read-only operations (queries that won't be modified), using `.AsNoTracking()` eliminates this overhead and speeds up materialization:
+
+```csharp
+context.Orders
+    .AsNoTracking()
+    .Where(o => o.Country == "Spain")
+    .ToList();
+```
+
+This is a critical optimization for reporting queries or high-volume read operations.
 
 ## Common performance traps in EF
 

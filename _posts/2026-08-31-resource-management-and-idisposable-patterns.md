@@ -27,10 +27,58 @@ Some objects exist only in managed memory and have no external dependency. They 
 - unmanaged memory pointers
 - background workers or native timers
 - streams that wrap OS resources
+- critical sections or sync primitives
 
 These resources are not reclaimed by the CLR just because the managed object becomes unreachable. The runtime may eventually collect the wrapper object, but the underlying resource can remain alive unless it is explicitly released.
 
 That is why the ownership model matters so much. A class that owns a resource must define who is responsible for disposing it and when that should happen.
+
+### Resource scarcity and limits
+
+Operating systems enforce strict limits on many resources. For example:
+- a process can open only a limited number of file handles (often 1024-65535 by default)
+- a process can maintain only a limited number of network connections
+- a process can allocate only so much native memory
+- database connection pools are often limited to a few hundred connections
+
+When resources are not disposed, they exhaust these limits. An application that leaks file handles will eventually fail to open files. An application that leaks connections will exhaust the connection pool and become unable to communicate with the database.
+
+This is why disposal is not a "nice to have" optimization. It is a correctness requirement. A resource leak is not just slower; it is broken.
+
+### SafeHandle and type-safe resource management
+
+The .NET Framework provides `SafeHandle`, a type-safe wrapper for unmanaged resources. Instead of managing raw IntPtr objects, SafeHandle enforces proper cleanup through a concrete type system.
+
+Example:
+
+```csharp
+public class MyNativeResource : SafeHandle
+{
+    public override bool IsInvalid => handle == IntPtr.Zero;
+
+    public MyNativeResource() : base(IntPtr.Zero, true)
+    {
+        handle = NativeMethods.CreateResource();
+    }
+
+    public override void Dispose(bool disposing)
+    {
+        if (!IsInvalid)
+        {
+            NativeMethods.DestroyResource(handle);
+        }
+        base.Dispose(disposing);
+    }
+}
+```
+
+SafeHandle is powerful because:
+- It guarantees cleanup through a finalizer (even if Dispose is not called).
+- It prevents accidental use-after-free.
+- It integrates with P/Invoke marshaling automatically.
+- It is strongly typed, preventing handle confusion.
+
+For teams working with unmanaged resources, using SafeHandle is far safer than managing raw IntPtr values.
 
 ## Common examples of unmanaged resources
 

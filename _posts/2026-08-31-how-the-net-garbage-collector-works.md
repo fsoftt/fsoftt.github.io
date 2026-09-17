@@ -63,29 +63,104 @@ In most real-world applications, a large percentage of allocations are temporary
 
 The .NET GC uses a generational model because it is much cheaper to collect a small portion of memory frequently than to scan the entire heap each time.
 
+### The generational hypothesis
+
+The generational model is built on an empirical observation: **most objects die young**. This is called the generational hypothesis or the weak generational hypothesis. In most real-world applications, the majority of objects created during a program's execution become unreachable within a very short time.
+
+This observation is so reliable that it drives the entire GC design. By frequently collecting recently-allocated objects (which are more likely to die) and rarely collecting older objects (which are more likely to survive), the GC dramatically reduces the amount of work needed for each GC cycle.
+
 ### Gen 0: the nursery
 
-Gen 0 is where new objects are allocated. This is the young generation.
+Gen 0 is where new objects are allocated. This is the young generation. The allocator maintains a simple pointer bump allocator: each new object is placed sequentially in memory, and the allocation pointer advances. This is extremely fast.
 
-When an object is created, it starts in Gen 0. If it survives a collection, it is promoted to Gen 1. If it survives more collections, it may eventually reach Gen 2.
+When Gen 0 becomes full (typically around 1-4 MB, depending on configuration), a generation 0 collection is triggered. This collection:
+1. Scans all roots and reachable objects.
+2. Marks which Gen 0 objects are still alive.
+3. Moves (compacts) surviving objects to Gen 1.
+4. Resets the Gen 0 pointer to the beginning.
 
-This is especially effective because most newly created objects are ephemeral. A generation 0 collection is usually fast and inexpensive compared to a full heap collection.
+Most Gen 0 collections recover 80-90% of the allocated memory, making the collection very efficient.
 
 ### Gen 1: survivors from the young heap
 
-Gen 1 contains objects that survived one or more Gen 0 collections but are not yet considered long-lived. It represents a middle ground between short-lived and long-lived objects.
+Gen 1 contains objects that survived one or more Gen 0 collections but are not yet considered long-lived. It acts as a buffer. Objects that survive more collections eventually get promoted to Gen 2.
+
+When Gen 1 fills, a Gen 0 + Gen 1 collection is triggered. This is more expensive than a Gen 0 collection alone because it must scan more memory, but it is still much cheaper than a full heap collection.
 
 ### Gen 2: the long-lived heap
 
-Gen 2 is the old generation. Objects that survive long enough end up here. These are usually the objects that live for the entire application lifetime or the duration of a long-running operation, such as services, caches, static state, or high-level application context.
+Gen 2 is the old generation. Objects that survive multiple collections end up here. These are usually the objects that live for the entire application lifetime or the duration of a long-running operation, such as services, caches, static state, or high-level application context.
 
-A Gen 2 collection is more expensive because it deals with a larger portion of memory and often requires more scanning.
+A Gen 2 collection is much more expensive because:
+- It must scan a larger portion of the heap.
+- It often involves moving many objects, which requires updating many references.
+- It can cause noticeable pause times in the application.
 
-### The Large Object Heap
+For these reasons, a typical .NET application tries to minimize Gen 2 collections.
 
-Large objects, typically arrays above a certain threshold, are stored in the Large Object Heap. The LOH is treated differently because large allocations are more expensive to move and compact.
+### The Large Object Heap (LOH)
 
-This matters for application design. If you repeatedly allocate large arrays or large strings, you can cause more pressure on the LOH and trigger more expensive collections. This is one of the most common reasons for memory churn in large enterprise systems.
+Large objects, typically arrays above 85 KB, are stored in the Large Object Heap. The LOH is treated differently because:
+- Large allocations are expensive to move and compact.
+- Moving a 10 MB array requires updating all references to that array.
+- The overhead of compaction often exceeds the benefit.
+
+By default, the LOH is not compacted during collection. This can lead to fragmentation: large dead objects leave gaps that are hard to reuse. If many large objects are allocated and freed, LOH fragmentation can force more Gen 2 collections to reclaim space.
+
+This matters for application design. If you repeatedly allocate and dispose large arrays, buffers, or large strings, you can cause significant LOH pressure and trigger more expensive collection cycles.
+
+### Collection mechanics: mark, sweep, and compact
+
+When a GC collection starts, several steps occur:
+
+**Mark Phase**: The GC starts from roots and traverses the reachable object graph. Each live object is marked. This phase must be accurate: it must find all reachable objects and mark no unreachable objects.
+
+**Sweep Phase**: After marking, the GC walks through the allocation space and identifies unmarked (dead) objects. Their memory is returned to the free pool.
+
+**Compact Phase** (not always performed): In generational collections, surviving objects are compacted (moved) to reduce fragmentation and improve locality. This requires:
+- Moving the object in memory.
+- Updating all references to the object (from roots, from other objects).
+- Updating interior pointers and pinned object references.
+
+Compaction is one of the most expensive operations in GC because it requires touching many objects and updating references.
+
+### Pause times and predictability
+
+One of the most critical concerns in production systems is **GC pause time**: the duration for which the application is suspended while garbage collection runs.
+
+A Gen 0 collection might pause the application for a few milliseconds (often < 10ms). A Gen 2 collection might pause for hundreds of milliseconds or even seconds on large heaps.
+
+For latency-sensitive applications (trading, real-time systems, interactive games), long pause times are unacceptable. This is why:
+- Many production systems use **server GC mode** instead of workstation mode.
+- Some systems disable automatic collection and create custom collection schedules.
+- Some systems use **concurrent or concurrent mark-sweep (CMS) collectors** that allow the application to run during portions of the collection.
+
+Pause time is not just a performance detail; it is an architectural constraint.
+
+### GC modes: workstation vs. server
+
+.NET offers different GC configurations:
+
+**Workstation GC** (default): Optimized for low-latency, low-resource consumption. Single-threaded collection. Good for client applications, web servers with low concurrency, or embedded systems. Pause times are predictable and typically small.
+
+**Server GC**: Optimized for throughput and large heaps. Parallelizes collection across multiple threads (one collection thread per logical CPU). Good for high-concurrency servers and large workloads. Pause times can be longer but total throughput is higher.
+
+The choice affects:
+- heap size and fragmentation patterns
+- pause time distribution
+- overall CPU consumption
+- scalability under high concurrency
+
+### Pinning and its cost
+
+Pinning is a mechanism to prevent the GC from moving an object. It is used when:
+- Unmanaged code has a direct pointer to the object.
+- GC handles reference the object.
+- The application needs to ensure an object doesn't move.
+
+When an object is pinned, the GC cannot move it during compaction. This can create **"pinned object heap" fragmentation**: pinned objects prevent compaction in their region, leaving gaps that are hard to reclaim and requiring more frequent collections.
+
+Excessive pinning is a hidden performance problem. It is often invisible until profiling reveals high GC pressure caused by fragmentation. Data structures using P/Invoke or COM interop should be pinned carefully and for as short a time as possible.
 
 ## Why generations work so well
 
