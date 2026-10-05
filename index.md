@@ -24,10 +24,10 @@ title: Home
         <img src="{{ '/assets/projects/piccolo-reader.svg' | relative_url }}" alt="PiccoloReader preview" />
       </div>
       <div class="project-card__header">
-        <span class="project-badge">Reader</span>
-        <h3><a href="https://github.com/fsoftt/PiccoloReader" target="_blank" rel="noreferrer">PiccoloReader</a></h3>
+        <span class="project-badge">Music reader</span>
+        <h3><a href="https://fsoftt.github.io/PiccoloReader/" target="_blank" rel="noreferrer">PiccoloReader</a></h3>
       </div>
-      <p>A lightweight reading experience focused on clarity, speed, and distraction-free browsing.</p>
+      <p>Piccolo is a music reader and study companion built for musicians who want a clean, focused way to browse and read sheet music with minimal friction.</p>
     </article>
 
     <article class="project-card project-card--deliver">
@@ -35,10 +35,10 @@ title: Home
         <img src="{{ '/assets/projects/deliver.svg' | relative_url }}" alt="Deliver preview" />
       </div>
       <div class="project-card__header">
-        <span class="project-badge">Delivery</span>
-        <h3><a href="https://github.com/fsoftt/Deliver" target="_blank" rel="noreferrer">Deliver</a></h3>
+        <span class="project-badge">Architecture</span>
+        <h3><a href="https://fsoftt.github.io/Deliver/" target="_blank" rel="noreferrer">Deliver</a></h3>
       </div>
-      <p>A practical app concept centered on organizing deliveries and streamlining everyday workflows.</p>
+      <p>Deliver is a portfolio project demonstrating microservices, domain-driven design, API gateways, bounded contexts, asynchronous messaging, and event-driven integration patterns in a realistic delivery workflow.</p>
     </article>
 
     <article class="project-card project-card--tranqui">
@@ -46,10 +46,10 @@ title: Home
         <img src="{{ '/assets/projects/tranqui.svg' | relative_url }}" alt="Tranqui preview" />
       </div>
       <div class="project-card__header">
-        <span class="project-badge">Wellbeing</span>
-        <h3><a href="https://github.com/fsoftt/Tranqui" target="_blank" rel="noreferrer">Tranqui</a></h3>
+        <span class="project-badge">Spam blocker</span>
+        <h3><a href="https://fsoftt.github.io/Tranqui/" target="_blank" rel="noreferrer">Tranqui</a></h3>
       </div>
-      <p>A calm, user-friendly solution designed to support routines, focus, and a healthier pace of life.</p>
+      <p>Tranqui is a privacy-focused mobile spam blocker. It identifies unwanted calls and builds a shared database of spam numbers from community reports, without storing plain phone numbers in clear text.</p>
     </article>
 
     <article class="project-card project-card--percha">
@@ -57,10 +57,10 @@ title: Home
         <img src="{{ '/assets/projects/percha.svg' | relative_url }}" alt="Percha preview" />
       </div>
       <div class="project-card__header">
-        <span class="project-badge">Commerce</span>
-        <h3><a href="https://github.com/fsoftt/Percha" target="_blank" rel="noreferrer">Percha</a></h3>
+        <span class="project-badge">Pattern design</span>
+        <h3><a href="https://fsoftt.github.io/Percha/" target="_blank" rel="noreferrer">Percha</a></h3>
       </div>
-      <p>A product-driven project exploring practical commerce flows and a cleaner user experience.</p>
+      <p>Percha generates ready-to-cut clothing patterns from user measurements, helping turn body dimensions into printable, scale-accurate sewing patterns for garment construction.</p>
     </article>
   </div>
 </section>
