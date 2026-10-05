@@ -1,0 +1,25 @@
+<svg width="800" height="520" viewBox="0 0 800 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgTra" x1="0" y1="0" x2="800" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0FDF4"/>
+      <stop offset="1" stop-color="#ECFEFF"/>
+    </linearGradient>
+    <linearGradient id="cardTra" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#34D399"/>
+      <stop offset="1" stop-color="#0F766E"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="520" rx="36" fill="url(#bgTra)"/>
+  <rect x="54" y="54" width="692" height="412" rx="30" fill="#F9FFFB" stroke="#BAF7D0" stroke-width="2"/>
+  <rect x="84" y="84" width="632" height="70" rx="22" fill="#ECFDF5"/>
+  <circle cx="680" cy="120" r="20" fill="url(#cardTra)"/>
+  <rect x="108" y="110" width="146" height="16" rx="8" fill="#A7F3D0"/>
+  <rect x="90" y="190" width="300" height="206" rx="30" fill="#F1FDF7"/>
+  <circle cx="240" cy="292" r="76" fill="#D1FAE5"/>
+  <path d="M202 293L230 321L286 265" stroke="url(#cardTra)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="420" y="190" width="270" height="42" rx="14" fill="#ECFDF5"/>
+  <rect x="420" y="250" width="220" height="16" rx="8" fill="#C7F9D4"/>
+  <rect x="420" y="282" width="200" height="16" rx="8" fill="#C7F9D4"/>
+  <rect x="420" y="314" width="180" height="16" rx="8" fill="#C7F9D4"/>
+  <rect x="420" y="350" width="140" height="28" rx="14" fill="url(#cardTra)"/>
+</svg>
