@@ -52,10 +52,12 @@ header.page-header h1 {
   color: var(--text) !important;
 }
 
+body .page-header .project-name,
+body .page-header .project-name a,
+body .page-header .project-tagline,
+body .page-header .project-tagline a,
 header.page-header h1 a,
 header.page-header h2,
-.project-name,
-.project-tagline,
 .hero h2,
 .section-heading h2,
 .project-card h3 a,
