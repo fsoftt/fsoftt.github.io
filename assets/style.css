@@ -202,23 +202,23 @@ section {
 }
 
 .project-card--reader {
-  --project-accent: #f97316;
-  --project-soft: rgba(249, 115, 22, 0.10);
+  --project-accent: #facc15;
+  --project-soft: rgba(250, 204, 21, 0.15);
 }
 
 .project-card--deliver {
-  --project-accent: #2563eb;
-  --project-soft: rgba(37, 99, 235, 0.10);
+  --project-accent: #16a34a;
+  --project-soft: rgba(22, 163, 74, 0.12);
 }
 
 .project-card--tranqui {
   --project-accent: #0f766e;
-  --project-soft: rgba(15, 118, 110, 0.10);
+  --project-soft: rgba(15, 118, 110, 0.12);
 }
 
 .project-card--percha {
-  --project-accent: #7c3aed;
-  --project-soft: rgba(124, 58, 237, 0.10);
+  --project-accent: #8b5cf6;
+  --project-soft: rgba(139, 92, 246, 0.14);
 }
 
 .project-card__content {
