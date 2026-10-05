@@ -49,13 +49,26 @@ header.page-header h1 {
   margin: 0;
   font-size: clamp(2rem, 3vw, 2.8rem);
   letter-spacing: -0.05em;
+  color: var(--text) !important;
+}
+
+header.page-header h1 a,
+header.page-header h2,
+.project-name,
+.project-tagline,
+.hero h2,
+.section-heading h2,
+.project-card h3 a,
+.post-item h3 a,
+.site-footer-owner {
+  color: var(--text) !important;
 }
 
 header.page-header h2 {
   margin: 0.65rem 0 0;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--muted);
+  color: var(--muted) !important;
 }
 
 main.main-content {
@@ -70,7 +83,8 @@ section {
 
 .hero,
 .projects,
-.posts {
+.posts,
+.contact-cta {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 26px;
@@ -78,7 +92,8 @@ section {
   backdrop-filter: blur(10px);
 }
 
-.hero {
+.hero,
+.contact-cta {
   padding: 2.25rem 2rem;
 }
 
@@ -99,7 +114,8 @@ section {
   line-height: 1.15;
 }
 
-.hero p {
+.hero p,
+.contact-cta p {
   margin: 0;
   max-width: 650px;
   color: var(--muted);
@@ -109,6 +125,36 @@ section {
 .projects,
 .posts {
   padding: 1.75rem 1.5rem 1.5rem;
+}
+
+.contact-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.9rem;
+  margin-top: 2rem;
+}
+
+.contact-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.25rem;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff !important;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 32px rgba(37, 99, 235, 0.28);
+  color: #fff !important;
 }
 
 .section-heading {
@@ -135,6 +181,16 @@ section {
   border: 1px solid var(--line);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   overflow: hidden;
+  position: relative;
+}
+
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--project-accent, var(--primary)), transparent);
+  opacity: 0.95;
 }
 
 .project-card:hover {
@@ -163,11 +219,17 @@ section {
   --project-soft: rgba(124, 58, 237, 0.10);
 }
 
+.project-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0.2rem 0.2rem 0.1rem;
+}
+
 .project-card__header {
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
-  padding: 0 0.2rem;
 }
 
 .project-screenshot {
@@ -197,6 +259,50 @@ section {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.project-tags,
+.project-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-tags li {
+  display: inline-flex;
+  padding: 0.38rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.04);
+  color: var(--text);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.project-highlights {
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.project-highlights li {
+  position: relative;
+  padding-left: 1rem;
+  color: var(--text);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.project-highlights li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--project-accent, var(--primary-dark));
+  font-size: 1rem;
+  line-height: 1.3;
 }
 
 .project-card h3,
@@ -244,8 +350,14 @@ header a {
 }
 
 main a:hover,
-header a:hover {
+header a:hover,
+.project-card h3 a:hover,
+.post-item h3 a:hover {
   color: var(--primary-dark);
+}
+
+.site-footer {
+  color: var(--muted) !important;
 }
 
 @media (max-width: 768px) {
@@ -259,7 +371,8 @@ header a:hover {
 
   .hero,
   .projects,
-  .posts {
+  .posts,
+  .contact-cta {
     padding-left: 1rem;
     padding-right: 1rem;
   }
@@ -273,11 +386,13 @@ header a:hover {
   .hero,
   .projects,
   .posts,
+  .contact-cta,
   header.page-header {
     border-radius: 18px;
   }
 
-  .hero {
+  .hero,
+  .contact-cta {
     padding: 1.5rem 1rem;
   }
 
