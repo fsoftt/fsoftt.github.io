@@ -4,18 +4,27 @@ title: Home
 ---
 
 <section class="hero">
-  <p class="eyebrow">Software engineer</p>
-  <h2>Building practical and thoughtful software.</h2>
-  <p>
+  <p class="hero__prompt" aria-hidden="true"><span>~/fsoftt</span> $ dotnet run --project portfolio</p>
+  <h1>Building <em>practical</em> and thoughtful software.</h1>
+  <p class="hero__lead">
     I enjoy creating tools that are useful, polished, and easy to maintain — with a strong focus on .NET,
     performance, and developer experience.
   </p>
+  <div class="hero__actions">
+    <a class="button button--primary" href="#projects">See my projects</a>
+    <a class="button button--ghost" href="#writing">Read the blog</a>
+  </div>
+  <dl class="hero__stats">
+    <div><dt>Projects</dt><dd>{{ site.data.projects | size }}</dd></div>
+    <div><dt>Posts</dt><dd>{{ site.posts | size }}</dd></div>
+    <div><dt>Stack</dt><dd>.NET</dd></div>
+  </dl>
 </section>
 
-<section class="projects" aria-labelledby="projects-title">
+<section class="projects" id="projects" aria-labelledby="projects-title">
   <div class="projects__top">
     <div class="section-heading">
-      <p class="eyebrow">Featured work</p>
+      <p class="eyebrow"><span>01</span> Featured work</p>
       <h2 id="projects-title">My projects</h2>
     </div>
     <div class="slider-controls">
@@ -52,26 +61,29 @@ title: Home
 </section>
 
 <section class="contact-cta">
-  <p class="eyebrow">Let’s build something useful</p>
+  <p class="eyebrow"><span>02</span> Let’s build something useful</p>
   <h2>Need a product, a system, or a thoughtful engineering partner?</h2>
   <p>I work on software products, architectural problem-solving, and practical product ideas from concept to implementation.</p>
-  <a class="contact-button" href="mailto:fsilva@duck.com">Email me</a>
+  <a class="button button--primary" href="mailto:{{ site.email }}">Email me</a>
 </section>
 
-<section class="posts">
+<section class="posts" id="writing">
   <div class="section-heading">
-    <p class="eyebrow">Writing</p>
+    <p class="eyebrow"><span>03</span> Writing</p>
     <h2>Latest posts</h2>
   </div>
 
-  <div class="post-list">
+  <ol class="post-list">
     {% for post in site.posts %}
-      <article class="post-item">
-        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-        <p><small>{{ post.date | date: "%B %-d, %Y" }}</small></p>
-      </article>
+      <li class="post-item">
+        <a href="{{ post.url | relative_url }}">
+          <span class="post-item__index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <span class="post-item__title">{{ post.title }}</span>
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
+        </a>
+      </li>
     {% endfor %}
-  </div>
+  </ol>
 </section>
 
 <script>

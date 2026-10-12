@@ -4,26 +4,47 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}" />
-    <title>{{ page.title | default: site.title }}</title>
+    <meta name="theme-color" content="#0a0a0c" />
+    <title>{% if page.title and page.title != "Home" %}{{ page.title }} · {% endif %}{{ site.title }}</title>
     <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}" />
-    <link rel="shortcut icon" href="{{ '/assets/favicon.svg' | relative_url }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}" />
-    {% if site.theme %}
-      <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css" />
-    {% endif %}
   </head>
-  <body>
-    <header class="page-header">
-      <h1 class="project-name"><a href="{{ '/' | relative_url }}" style="color: inherit; text-decoration: none;">{{ site.title }}</a></h1>
-      <h2 class="project-tagline">{{ site.description }}</h2>
+  <body class="{% if page.layout == 'default' and page.date %}is-post{% endif %}">
+    <header class="site-nav">
+      <div class="site-nav__inner">
+        <a class="brand" href="{{ '/' | relative_url }}" aria-label="fsoftt home">
+          <span class="brand__mark" aria-hidden="true">fs</span>
+          <span class="brand__name">fsoftt</span>
+        </a>
+        <nav aria-label="Main">
+          <a href="{{ '/#projects' | relative_url }}">Projects</a>
+          <a href="{{ '/#writing' | relative_url }}">Writing</a>
+          <a class="site-nav__cta" href="mailto:{{ site.email }}">Contact</a>
+        </nav>
+      </div>
     </header>
 
     <main class="main-content">
-      {{ content }}
+      {% if page.date %}
+        <article class="post">
+          <a class="post__back" href="{{ '/#writing' | relative_url }}">&larr; All posts</a>
+          <p class="post__meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
+          <div class="post__body">
+            {{ content }}
+          </div>
+        </article>
+      {% else %}
+        {{ content }}
+      {% endif %}
     </main>
 
-    <footer class="site-footer" style="text-align: center; margin-top: 2rem;">
-      <span class="site-footer-owner">© {{ site.time | date: '%Y' }} {{ site.title }}</span>
+    <footer class="site-footer">
+      <span class="brand__mark brand__mark--small" aria-hidden="true">fs</span>
+      <span>© {{ site.time | date: '%Y' }} fsoftt · Built with Jekyll on GitHub Pages</span>
+      <a href="https://github.com/fsoftt" target="_blank" rel="noreferrer">GitHub</a>
     </footer>
   </body>
 </html>
