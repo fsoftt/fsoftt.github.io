@@ -1,0 +1,98 @@
+# Projects shown in the homepage slider. `accent` and `accent_2` are taken from each app's own palette.
+- name: Parche
+  url: https://fsoftt.github.io/Parche/
+  image: /assets/projects/parche.jpg
+  badge: Media center
+  accent: "#8b5cf6"
+  accent_2: "#ec4899"
+  description: >-
+    Parche is a media center for Android, Android TV and Windows built with .NET MAUI. It shows a TMDB or Cinemeta
+    catalog and plays content from the addons you add, compatible with the Stremio addon protocol.
+  tags: [.NET MAUI, Android TV, Windows]
+  highlights:
+    - Phone, TV (D-pad) and desktop layouts
+    - ExoPlayer on Android, LibVLC on Windows
+
+- name: ParcheRoku
+  url: https://fsoftt.github.io/Parche/#roku
+  image: /assets/projects/parche-roku.png
+  badge: Roku channel
+  accent: "#ec4899"
+  accent_2: "#8b5cf6"
+  description: >-
+    The Roku version of Parche, written in BrightScript and SceneGraph. A full-HD channel, fully navigable with the
+    remote, with continue watching, My list and external subtitles from your addons.
+  tags: [BrightScript, SceneGraph, Roku]
+  highlights:
+    - Sources ranked by language, quality and size
+    - Spanish, English and Portuguese UI
+
+- name: Wired
+  url: https://fsoftt.github.io/Wired/
+  image: /assets/projects/wired.jpg
+  badge: Music player
+  accent: "#22d3ee"
+  accent_2: "#8b5cf6"
+  description: >-
+    Wired is a cross-platform music player built with .NET MAUI around source plugins. Search, stream or download to
+    an offline library that survives uninstalling the app, with synced lyrics and Spotify playlist import.
+  tags: [.NET MAUI, MVVM, Plugins]
+  highlights:
+    - Offline library with background downloads
+    - Synced lyrics from LRCLIB
+
+- name: PiccoloReader
+  url: https://fsoftt.github.io/PiccoloReader/
+  image: /assets/projects/piccolo-reader.svg
+  badge: Music reader
+  accent: "#facc15"
+  accent_2: "#f59e0b"
+  description: >-
+    Piccolo is a music reader and study companion built for musicians who want a clean, focused way to browse and
+    read sheet music with minimal friction.
+  tags: [Sheet music, UX, Reading flow]
+  highlights:
+    - Focused reading experience
+    - Built for study and practice
+
+- name: Deliver
+  url: https://fsoftt.github.io/Deliver/
+  image: /assets/projects/deliver.svg
+  badge: Architecture
+  accent: "#16a34a"
+  accent_2: "#4ade80"
+  description: >-
+    Deliver is a portfolio project demonstrating microservices, domain-driven design, API gateways, bounded contexts,
+    asynchronous messaging, and event-driven integration patterns in a realistic delivery workflow.
+  tags: [Microservices, DDD, Event-driven]
+  highlights:
+    - API gateway + bounded contexts
+    - Asynchronous workflows with events
+
+- name: Tranqui
+  url: https://fsoftt.github.io/Tranqui/
+  image: /assets/projects/tranqui.svg
+  badge: Spam blocker
+  accent: "#0f766e"
+  accent_2: "#34d399"
+  description: >-
+    Tranqui is a privacy-focused mobile spam blocker. It identifies unwanted calls and builds a shared database of
+    spam numbers from community reports, without storing plain phone numbers in clear text.
+  tags: [Mobile, Privacy, Community data]
+  highlights:
+    - Hash-based phone storage
+    - Shared spam detection network
+
+- name: Percha
+  url: https://fsoftt.github.io/Percha/
+  image: /assets/projects/percha.svg
+  badge: Pattern design
+  accent: "#8b5cf6"
+  accent_2: "#c4b5fd"
+  description: >-
+    Percha generates ready-to-cut clothing patterns from user measurements, helping turn body dimensions into
+    printable, scale-accurate sewing patterns for garment construction.
+  tags: [Patternmaking, SVG, Browser app]
+  highlights:
+    - Generates sewing patterns from measurements
+    - Exports to PDF and SVG
