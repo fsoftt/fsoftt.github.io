@@ -57,10 +57,10 @@
 
 - name: Deliver
   url: https://fsoftt.github.io/Deliver/
-  image: /assets/projects/deliver.svg
+  image: /assets/projects/deliver.jpg
   badge: Architecture
-  accent: "#16a34a"
-  accent_2: "#4ade80"
+  accent: "#19c37d"
+  accent_2: "#f5b700"
   description: >-
     Deliver is a portfolio project demonstrating microservices, domain-driven design, API gateways, bounded contexts,
     asynchronous messaging, and event-driven integration patterns in a realistic delivery workflow.
@@ -71,10 +71,10 @@
 
 - name: Tranqui
   url: https://fsoftt.github.io/Tranqui/
-  image: /assets/projects/tranqui.svg
+  image: /assets/projects/tranqui.jpg
   badge: Spam blocker
-  accent: "#0f766e"
-  accent_2: "#34d399"
+  accent: "#3d7fc4"
+  accent_2: "#e9dcc4"
   description: >-
     Tranqui is a privacy-focused mobile spam blocker. It identifies unwanted calls and builds a shared database of
     spam numbers from community reports, without storing plain phone numbers in clear text.
