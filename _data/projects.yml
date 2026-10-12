@@ -41,6 +41,20 @@
     - Offline library with background downloads
     - Synced lyrics from LRCLIB
 
+- name: Murmur
+  url: https://fsoftt.github.io/Murmur/
+  image: /assets/projects/murmur.jpg
+  badge: Private messaging
+  accent: "#9cc3ac"
+  accent_2: "#5e8c74"
+  description: >-
+    Murmur is a local-first, end-to-end encrypted, peer-to-peer messenger. No accounts, phone number or email: you
+    add contacts in person with a QR code, and messages travel encrypted from phone to phone.
+  tags: [.NET MAUI, Noise protocol, P2P]
+  highlights:
+    - Noise_KK sessions with forward secrecy
+    - Server only sees rotating random topics
+
 - name: PiccoloReader
   url: https://fsoftt.github.io/PiccoloReader/
   image: /assets/projects/piccolo-reader.svg
