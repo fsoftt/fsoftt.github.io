@@ -85,10 +85,10 @@
 
 - name: Percha
   url: https://fsoftt.github.io/Percha/
-  image: /assets/projects/percha.svg
+  image: /assets/projects/percha.jpg
   badge: Pattern design
-  accent: "#8b5cf6"
-  accent_2: "#c4b5fd"
+  accent: "#ff4d2e"
+  accent_2: "#d4ff3a"
   description: >-
     Percha generates ready-to-cut clothing patterns from user measurements, helping turn body dimensions into
     printable, scale-accurate sewing patterns for garment construction.
