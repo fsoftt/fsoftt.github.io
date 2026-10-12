@@ -4,130 +4,107 @@ title: Home
 ---
 
 <section class="hero">
-  <p class="eyebrow">Software engineer</p>
-  <h2>Building practical and thoughtful software.</h2>
-  <p>
+  <p class="hero__prompt" aria-hidden="true"><span>~/fsoftt</span> $ dotnet run --project portfolio</p>
+  <h1>Building <em>practical</em> and thoughtful software.</h1>
+  <p class="hero__lead">
     I enjoy creating tools that are useful, polished, and easy to maintain — with a strong focus on .NET,
     performance, and developer experience.
   </p>
+  <div class="hero__actions">
+    <a class="button button--primary" href="#projects">See my projects</a>
+    <a class="button button--ghost" href="#writing">Read the blog</a>
+  </div>
+  <dl class="hero__stats">
+    <div><dt>Projects</dt><dd>{{ site.data.projects | size }}</dd></div>
+    <div><dt>Posts</dt><dd>{{ site.posts | size }}</dd></div>
+    <div><dt>Stack</dt><dd>.NET</dd></div>
+  </dl>
 </section>
 
-<section class="projects">
-  <div class="section-heading">
-    <p class="eyebrow">Featured work</p>
-    <h2>My projects</h2>
+<section class="projects" id="projects" aria-labelledby="projects-title">
+  <div class="projects__top">
+    <div class="section-heading">
+      <p class="eyebrow"><span>01</span> Featured work</p>
+      <h2 id="projects-title">My projects</h2>
+    </div>
+    <div class="slider-controls">
+      <button class="slider-btn" type="button" data-slide="-1" aria-label="Previous projects">&#8249;</button>
+      <button class="slider-btn" type="button" data-slide="1" aria-label="Next projects">&#8250;</button>
+    </div>
   </div>
 
-  <div class="project-grid">
-    <article class="project-card project-card--reader">
-      <div class="project-screenshot">
-        <img src="{{ '/assets/projects/piccolo-reader.svg' | relative_url }}" alt="PiccoloReader preview" />
-      </div>
-      <div class="project-card__content">
-        <div class="project-card__header">
-          <span class="project-badge">Music reader</span>
-          <h3><a href="https://fsoftt.github.io/PiccoloReader/" target="_blank" rel="noreferrer">PiccoloReader</a></h3>
-        </div>
-        <p>Piccolo is a music reader and study companion built for musicians who want a clean, focused way to browse and read sheet music with minimal friction.</p>
-        <ul class="project-tags">
-          <li>Sheet music</li>
-          <li>UX</li>
-          <li>Reading flow</li>
-        </ul>
-        <ul class="project-highlights">
-          <li>Focused reading experience</li>
-          <li>Built for study and practice</li>
-        </ul>
-      </div>
-    </article>
-
-    <article class="project-card project-card--deliver">
-      <div class="project-screenshot">
-        <img src="{{ '/assets/projects/deliver.svg' | relative_url }}" alt="Deliver preview" />
-      </div>
-      <div class="project-card__content">
-        <div class="project-card__header">
-          <span class="project-badge">Architecture</span>
-          <h3><a href="https://fsoftt.github.io/Deliver/" target="_blank" rel="noreferrer">Deliver</a></h3>
-        </div>
-        <p>Deliver is a portfolio project demonstrating microservices, domain-driven design, API gateways, bounded contexts, asynchronous messaging, and event-driven integration patterns in a realistic delivery workflow.</p>
-        <ul class="project-tags">
-          <li>Microservices</li>
-          <li>DDD</li>
-          <li>Event-driven</li>
-        </ul>
-        <ul class="project-highlights">
-          <li>API gateway + bounded contexts</li>
-          <li>Asynchronous workflows with events</li>
-        </ul>
-      </div>
-    </article>
-
-    <article class="project-card project-card--tranqui">
-      <div class="project-screenshot">
-        <img src="{{ '/assets/projects/tranqui.svg' | relative_url }}" alt="Tranqui preview" />
-      </div>
-      <div class="project-card__content">
-        <div class="project-card__header">
-          <span class="project-badge">Spam blocker</span>
-          <h3><a href="https://fsoftt.github.io/Tranqui/" target="_blank" rel="noreferrer">Tranqui</a></h3>
-        </div>
-        <p>Tranqui is a privacy-focused mobile spam blocker. It identifies unwanted calls and builds a shared database of spam numbers from community reports, without storing plain phone numbers in clear text.</p>
-        <ul class="project-tags">
-          <li>Mobile</li>
-          <li>Privacy</li>
-          <li>Community data</li>
-        </ul>
-        <ul class="project-highlights">
-          <li>Hash-based phone storage</li>
-          <li>Shared spam detection network</li>
-        </ul>
-      </div>
-    </article>
-
-    <article class="project-card project-card--percha">
-      <div class="project-screenshot">
-        <img src="{{ '/assets/projects/percha.svg' | relative_url }}" alt="Percha preview" />
-      </div>
-      <div class="project-card__content">
-        <div class="project-card__header">
-          <span class="project-badge">Pattern design</span>
-          <h3><a href="https://fsoftt.github.io/Percha/" target="_blank" rel="noreferrer">Percha</a></h3>
-        </div>
-        <p>Percha generates ready-to-cut clothing patterns from user measurements, helping turn body dimensions into printable, scale-accurate sewing patterns for garment construction.</p>
-        <ul class="project-tags">
-          <li>Patternmaking</li>
-          <li>SVG</li>
-          <li>Browser app</li>
-        </ul>
-        <ul class="project-highlights">
-          <li>Generates sewing patterns from measurements</li>
-          <li>Exports to PDF and SVG</li>
-        </ul>
-      </div>
-    </article>
+  <div class="slider">
+    <div class="slider-track" tabindex="0" aria-label="Projects">
+      {% for project in site.data.projects %}
+        <article class="title-card" style="--accent: {{ project.accent }}; --accent-2: {{ project.accent_2 }};">
+          <a class="title-card__link" href="{{ project.url }}" target="_blank" rel="noreferrer">
+            <div class="title-card__poster">
+              <img src="{{ project.image | relative_url }}" alt="{{ project.name }} screenshot" loading="lazy" />
+              <span class="title-card__badge">{{ project.badge }}</span>
+            </div>
+            <div class="title-card__body">
+              <h3>{{ project.name }}</h3>
+              <p>{{ project.description }}</p>
+              <ul class="title-card__tags">
+                {% for tag in project.tags %}<li>{{ tag }}</li>{% endfor %}
+              </ul>
+              <ul class="title-card__highlights">
+                {% for item in project.highlights %}<li>{{ item }}</li>{% endfor %}
+              </ul>
+              <span class="title-card__cta">Visit site <span aria-hidden="true">&rarr;</span></span>
+            </div>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
   </div>
 </section>
 
 <section class="contact-cta">
-  <p class="eyebrow">Let’s build something useful</p>
+  <p class="eyebrow"><span>02</span> Let’s build something useful</p>
   <h2>Need a product, a system, or a thoughtful engineering partner?</h2>
   <p>I work on software products, architectural problem-solving, and practical product ideas from concept to implementation.</p>
-  <a class="contact-button" href="mailto:fsilva@duck.com">Email me</a>
+  <a class="button button--primary" href="mailto:{{ site.email }}">Email me</a>
 </section>
 
-<section class="posts">
+<section class="posts" id="writing">
   <div class="section-heading">
-    <p class="eyebrow">Writing</p>
+    <p class="eyebrow"><span>03</span> Writing</p>
     <h2>Latest posts</h2>
   </div>
 
-  <div class="post-list">
+  <ol class="post-list">
     {% for post in site.posts %}
-      <article class="post-item">
-        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-        <p><small>{{ post.date | date: "%B %-d, %Y" }}</small></p>
-      </article>
+      <li class="post-item">
+        <a href="{{ post.url | relative_url }}">
+          <span class="post-item__index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <span class="post-item__title">{{ post.title }}</span>
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
+        </a>
+      </li>
     {% endfor %}
-  </div>
+  </ol>
 </section>
+
+<script>
+  (function () {
+    var track = document.querySelector('.slider-track');
+    if (!track) return;
+    var buttons = document.querySelectorAll('.slider-btn');
+
+    function update() {
+      var max = track.scrollWidth - track.clientWidth - 2;
+      buttons[0].disabled = track.scrollLeft <= 2;
+      buttons[1].disabled = track.scrollLeft >= max;
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        track.scrollBy({ left: Number(button.dataset.slide) * track.clientWidth * 0.85, behavior: 'smooth' });
+      });
+    });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>
