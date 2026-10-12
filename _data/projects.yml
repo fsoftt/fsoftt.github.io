@@ -57,10 +57,10 @@
 
 - name: PiccoloReader
   url: https://fsoftt.github.io/PiccoloReader/
-  image: /assets/projects/piccolo-reader.svg
+  image: /assets/projects/piccolo-reader.jpg
   badge: Music reader
-  accent: "#facc15"
-  accent_2: "#f59e0b"
+  accent: "#8b6cff"
+  accent_2: "#f5b544"
   description: >-
     Piccolo is a music reader and study companion built for musicians who want a clean, focused way to browse and
     read sheet music with minimal friction.
