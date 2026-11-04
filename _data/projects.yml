@@ -110,3 +110,17 @@
   highlights:
     - Generates sewing patterns from measurements
     - Exports to PDF and SVG
+
+- name: Solfi
+  url: https://fsoftt.github.io/solfi/
+  image: /assets/projects/solfi.jpg
+  badge: Music learning
+  accent: "#6C5CE7"
+  accent_2: "#F5C542"
+  description: >-
+    Solfi is a native music-teaching app for kids and adults that teaches music from zero. Five levels of short
+    lessons with seven exercise types, plus playable solfeos with synced note highlight, tempo, metronome and loop.
+  tags: [Kotlin, Compose Multiplatform, Music notation]
+  highlights:
+    - Own software synth and Canvas notation renderer
+    - Spanish, English and Portuguese, works offline
