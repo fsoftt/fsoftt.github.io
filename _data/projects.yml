@@ -124,3 +124,17 @@
   highlights:
     - Own software synth and Canvas notation renderer
     - Spanish, English and Portuguese, works offline
+
+- name: Profe
+  url: https://fsoftt.github.io/profe/
+  image: /assets/projects/profe.svg
+  badge: Exam practice
+  accent: "#5545d6"
+  accent_2: "#F5C542"
+  description: >-
+    Practice for Colombia's teacher merit exam (CNSC): 500+ questions by topic and role, timed mock exams, and
+    feedback on every option.
+  tags: [Web, Education, GitHub Pages]
+  highlights:
+    - 500+ questions by topic and role
+    - Timed mock exams with feedback on every option
