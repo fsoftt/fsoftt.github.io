@@ -138,3 +138,17 @@
   highlights:
     - 500+ questions by topic and role
     - Timed mock exams with feedback on every option
+
+- name: Berraco
+  url: https://fsoftt.github.io/berraco/en/
+  image: /assets/projects/berraco.jpg
+  badge: Intermittent fasting
+  accent: "#fbbf24"
+  accent_2: "#d97706"
+  description: >-
+    Berraco is an installable, offline intermittent fasting app with a ring timer and the phases your body goes
+    through hour by hour. Everything stays on your device: no account, no server, with JSON export and import.
+  tags: [React, TypeScript, PWA]
+  highlights:
+    - Protocols from 13:11 to 48h, plus weight and water tracking
+    - Spanish, English and Portuguese, open it at fsoftt.github.io/berraco/app/
