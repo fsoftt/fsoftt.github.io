@@ -152,3 +152,19 @@
   highlights:
     - Protocols from 13:11 to 48h, plus weight and water tracking
     - Spanish, English and Portuguese, open it at fsoftt.github.io/berraco/app/
+
+- name: Limpio
+  url: https://fsoftt.github.io/limpio/
+  image: /assets/projects/limpio.jpg
+  badge: Windows 11
+  accent: "#0067C0"
+  accent_2: "#4CC2FF"
+  description: >-
+    Limpio is a free, open-source Windows 11 app that removes bloatware and telemetry, and measures the gain before
+    and after so you can see what actually changed.
+  tags: [C#, .NET 10, WPF, WPF-UI, MVVM]
+  highlights:
+    - 60 data-driven tweaks with Minimal, Recommended and Aggressive presets
+    - Before/after metrics (RAM, processes, services, privacy score 0-100)
+    - Restore point, JSON backup and revert, with protected system apps
+    - Landing page in Spanish, English and Portuguese
